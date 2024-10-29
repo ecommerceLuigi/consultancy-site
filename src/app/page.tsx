@@ -2,11 +2,17 @@ import Image from "next/image";
 import HeadComponent from "../components/HeadComponent";
 
 export default function Home() {
+  // Define canonical URL based on domain
+  const canonicalUrl = typeof window !== 'undefined' && window.location.hostname.includes("luigimoccia.ca")
+    ? "https://luigimoccia.ca"
+    : "https://luigimoccia.com";
+
   return (
     <>
       <HeadComponent 
         title="Home Page" 
         description="Welcome to Luigi Moccia's consultancy site" 
+        canonicalUrl={canonicalUrl}  // Pass canonical URL explicitly
       />
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
