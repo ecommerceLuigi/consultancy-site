@@ -1,3 +1,5 @@
+"use client";
+
 import Head from 'next/head';
 import getConfig from 'next/config';
 import { useEffect, useState } from 'react';
@@ -9,9 +11,7 @@ const HeadComponent = ({ title, description }: { title: string; description: str
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Check the current hostname
       const hostname = window.location.hostname;
-      // Set the canonical URL based on the hostname
       setCanonicalUrl(
         hostname.includes('luigimoccia.ca')
           ? publicRuntimeConfig.canonicalUrlCa
@@ -25,7 +25,6 @@ const HeadComponent = ({ title, description }: { title: string; description: str
       <title>{title}</title>
       <meta name="description" content={description} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      {/* Add other SEO meta tags here */}
     </Head>
   );
 };
