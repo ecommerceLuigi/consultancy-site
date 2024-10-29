@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  publicRuntimeConfig: {
+    canonicalUrlCom: process.env.CANONICAL_URL_COM,
+    canonicalUrlCa: process.env.CANONICAL_URL_CA,
+  },
+  /* other config options here */
 };
 
 export default nextConfig;
