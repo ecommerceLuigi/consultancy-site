@@ -9,7 +9,9 @@ const HeadComponent = ({ title, description }: { title: string; description: str
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Check the current hostname
       const hostname = window.location.hostname;
+      // Set the canonical URL based on the hostname
       setCanonicalUrl(
         hostname.includes('luigimoccia.ca')
           ? publicRuntimeConfig.canonicalUrlCa
@@ -23,7 +25,7 @@ const HeadComponent = ({ title, description }: { title: string; description: str
       <title>{title}</title>
       <meta name="description" content={description} />
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      {/* Add any additional SEO meta tags here */}
+      {/* Add other SEO meta tags here */}
     </Head>
   );
 };
