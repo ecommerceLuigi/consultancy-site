@@ -3,8 +3,6 @@ import Image from "next/image";
 import HeadComponent from "../components/HeadComponent";
 import getConfig from "next/config";
 
-const { publicRuntimeConfig } = getConfig();
-
 export default function Home() {
   return (
     <>
