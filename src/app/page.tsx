@@ -1,7 +1,6 @@
 // src/app/page.tsx
 import Image from "next/image";
 import HeadComponent from "../components/HeadComponent";
-import getConfig from "next/config";
 
 export default function Home() {
   return (
