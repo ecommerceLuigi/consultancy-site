@@ -1,3 +1,4 @@
+// app/layout.tsx
 import localFont from "next/font/local";
 import "./globals.css";
 import getConfig from "next/config";
@@ -13,14 +14,23 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const { publicRuntimeConfig = {} } = getConfig();
-const canonicalUrl = publicRuntimeConfig.canonicalUrlCom || publicRuntimeConfig.canonicalUrlCa || "https://defaulturl.com";
+const { publicRuntimeConfig } = getConfig();
+
+function getCanonicalUrl(hostname: string): string {
+  return hostname.includes("luigimoccia.ca")
+    ? publicRuntimeConfig.canonicalUrlCa
+    : publicRuntimeConfig.canonicalUrlCom;
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const canonicalUrl = getCanonicalUrl(
+    typeof window !== "undefined" ? window.location.hostname : ""
+  );
+
   return (
     <html lang="en">
       <head>
