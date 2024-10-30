@@ -17,26 +17,55 @@ const geistMono = localFont({
 
 const { publicRuntimeConfig } = getConfig();
 
-function getCanonicalUrl(domain: string): string {
-  return domain === 'ca'
-    ? publicRuntimeConfig.canonicalUrlCa
-    : publicRuntimeConfig.canonicalUrlCom;
+function getConfigForDomain(domain: string) {
+  if (domain === "ca") {
+    return {
+      canonicalUrl: publicRuntimeConfig.canonicalUrlCa,
+      gaId: publicRuntimeConfig.gaIdCa,
+      metaTitle: publicRuntimeConfig.metaTitleCa,
+      metaDescription: publicRuntimeConfig.metaDescriptionCa,
+    };
+  }
+  return {
+    canonicalUrl: publicRuntimeConfig.canonicalUrlCom,
+    gaId: publicRuntimeConfig.gaIdCom,
+    metaTitle: publicRuntimeConfig.metaTitleCom,
+    metaDescription: publicRuntimeConfig.metaDescriptionCom,
+  };
 }
 
-// Make RootLayout async to use `await headers()`
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Await headers and retrieve domain from custom header
-  const domain = (await headers()).get('x-custom-domain') || 'com';
-  const canonicalUrl = getCanonicalUrl(domain);
+  const domain = (await headers()).get("x-custom-domain") || "com";
+  const { canonicalUrl, gaId, metaTitle, metaDescription } = getConfigForDomain(domain);
 
   return (
     <html lang="en">
       <head>
         <link rel="canonical" href={canonicalUrl} />
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        {gaId && (
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          ></script>
+        )}
+        {gaId && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `,
+            }}
+          />
+        )}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
