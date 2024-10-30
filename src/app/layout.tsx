@@ -2,6 +2,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import getConfig from "next/config";
+import { headers } from "next/headers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,20 +17,21 @@ const geistMono = localFont({
 
 const { publicRuntimeConfig } = getConfig();
 
-function getCanonicalUrl(hostname: string): string {
-  return hostname.includes("luigimoccia.ca")
+function getCanonicalUrl(domain: string): string {
+  return domain === 'ca'
     ? publicRuntimeConfig.canonicalUrlCa
     : publicRuntimeConfig.canonicalUrlCom;
 }
 
-export default function RootLayout({
+// Make RootLayout async to use `await headers()`
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const canonicalUrl = getCanonicalUrl(
-    typeof window !== "undefined" ? window.location.hostname : ""
-  );
+  // Await headers and retrieve domain from custom header
+  const domain = (await headers()).get('x-custom-domain') || 'com';
+  const canonicalUrl = getCanonicalUrl(domain);
 
   return (
     <html lang="en">
